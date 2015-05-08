@@ -12,7 +12,6 @@
     <title>Hotel Reservation/Booking</title>
 
     <link href="assets/css/style1.css" rel="stylesheet">
-
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/font.css" rel="stylesheet">
 
@@ -157,7 +156,7 @@
 	    	<div class="row">
 	    		<div class="col-lg-8 col-lg-offset-2 centered">
 	    			<h1>HOTEL</h1>
-	    			<h2>Reservation/Booking</h2>
+	    			<h2>*hotel motto here*</h2>
 	    		</div>
 	    	</div>
 	    </div>
@@ -222,7 +221,7 @@
 			<div class="row centered">
 				<h3><b>RESERVE/BOOK</b></h3>
 				
-				<form onsubmit = "return validate();" action = "Success" method = "get">
+				<form onsubmit = "return validate();" action = "Signup" method = "get">
 					<h2>Customer Information</h2><br>
 					<p>Customer Username: </p>
 					<input  class = "input" type = "text" name = "UserName" placeholder = "Username" id = "User"/><br><br>
@@ -263,8 +262,9 @@
 						<option value = "09">09</option>
 						<option value = "10">10</option>
 					</select><br>
-					<p>Room Rate is: </p>
-					<p>Maximum Number in Room is: <br>
+					<p>Room Rate is: <br>
+					<span>P1,200.00/day </span><br>
+					Maximum Number in Room is: <br>
 					<span> 8 </span></p>
 					
 					<h2>Reservation Information</h2><br>

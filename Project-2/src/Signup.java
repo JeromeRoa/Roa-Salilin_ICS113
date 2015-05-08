@@ -2,6 +2,9 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,11 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/Success")
-public class Success extends HttpServlet {
+@WebServlet("/Signup")
+public class Signup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
       
-    public Success() {
+    public Signup() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -23,7 +26,12 @@ public class Success extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String User = request.getParameter("UserName");
-		String Name = request.getParameter("LastName") + ", " + request.getParameter("FirstName") + request.getParameter("MiddleName");
+		String Last = request.getParameter("LastName");
+		String First = 	request.getParameter("FirstName");
+        String Middle = request.getParameter("MiddleName");
+		
+		
+		String Name = Last + ", " + First + Middle;
 		//String Sex = request.getParameter("Sex");
 		//String Age = request.getParameter("Age");
 		
@@ -31,7 +39,9 @@ public class Success extends HttpServlet {
 		String Email = request.getParameter("Email");
 		String Number = request.getParameter("Number");
 		
-		String Room = request.getParameter("Floor") + request.getParameter("Room");
+		String Floor = request.getParameter("Floor");
+		String Room = request.getParameter("Room");
+		String RoomComplete =  Floor + Room;
 		
 		String CheckIn = request.getParameter("CheckIn");
 		String CheckOut = request.getParameter("CheckOut");
@@ -43,6 +53,8 @@ public class Success extends HttpServlet {
 		String CreditCard = request.getParameter("CreditCard");
 		String Bank = request.getParameter("Bank");
 		String Paid = request.getParameter("Paid");
+		setNew(User, Last, First, Middle, Email, Number, Floor, Room, CheckIn, CheckOut, Guest, Adult, Child, CreditCard,Bank);
+		System.out.println("123");
 		
 		out.println("<%@ page language='java' contentType='text/html'; charset='ISO-8859-1'" +
 "pageEncoding='ISO-8859-1'%>" +
@@ -99,7 +111,7 @@ public class Success extends HttpServlet {
 				"<p>Address: <span>" + Address + "</span></p>" +
 				"<p>E-Mail Address: <span>" + Email + "</span></p>" +
 				"<p>Contact Number: <span>" + Number + "</span></p>" +
-				"<p>Room:<span> " + Room + "</span></p>" +
+				"<p>Room:<span> " + RoomComplete + "</span></p>" +
 				"<p>Check-In Date: <span>" + CheckIn + "</span></p>" +
 				"<p>Check-Out Date:<span> " + CheckOut + "</span></p>" +
 				"<p>Total Number of Guests: <span>" + Guest + " having " + Adult + " adults and " + Child + " children." + "</span></p>" +
@@ -122,5 +134,39 @@ public class Success extends HttpServlet {
     "<script src='assets/js/bootstrap.js'></script>" +
   "</body>" +
 "</html>");
+		
+		response.sendRedirect("index.jsp");
+	}
+	
+	public void setNew(String username, String lastname, String firstname, String middlename, String email, 
+			String contact, String floor, String room, String cin, String cout, String guest, String adult, String children,
+			String credit, String bank)
+	{
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/HOTEL_DB", "root", "1234");
+			CallableStatement stmt = con.prepareCall("{call setUser(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			stmt.setString(1, username);
+			stmt.setString(2, lastname);
+			stmt.setString(3, firstname);
+			stmt.setString(4, middlename);
+			stmt.setString(5, email);
+			stmt.setString(6, contact);
+			stmt.setString(7, floor);
+			stmt.setString(8, room);
+			stmt.setString(9, cin);
+			stmt.setString(10, cout);
+			stmt.setString(11, guest);
+			stmt.setString(12, adult);
+			stmt.setString(13, children);
+			stmt.setString(14, credit);
+			stmt.setString(15, bank);		
+			System.out.println("success");
+			
+			
+			stmt.execute();
+		} catch (Exception e) {System.out.println(e);}
 	}
 }
